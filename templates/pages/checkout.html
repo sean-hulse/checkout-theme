@@ -1,0 +1,344 @@
+{{#partial "head"}}
+
+{{{ checkout.checkout_head }}}
+{{{ stylesheet '/assets/css/optimized-checkout.css' }}}
+{{ getFontsCollection }}
+
+<script type="text/javascript">
+    window.language = {{{langJson 'optimized_checkout'}}};
+</script>
+
+{{{head.scripts}}}
+
+{{/partial}}
+
+<style>
+.container {
+    margin: 0 auto;
+    max-width: 92.30769rem;
+    width: 100%;
+    min-height: 15.38462rem;
+    padding: 0 1.5rem 7.5rem;
+}
+.checkout-layout {
+    padding-left: 1.15385rem;
+    padding-right: 1.15385rem;
+    width: 100%;
+}
+.checkout-header {
+    margin: 1rem 0;
+    padding: 1.5rem 0;
+}
+.checkout-number {
+    width: 32px;
+    line-height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 18px;
+    background: #757575;
+    color: #ffffff;
+    display: inline-block;
+}
+.checkout-title {
+    display: inline-block;
+    vertical-align: sub;
+    margin: 0 0 0 1.5rem;
+    color: #333;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 1.9rem;
+}
+.checkout-rows {
+    list-style-type: none;
+    margin: 0;
+}
+.checkout-row {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0.75rem 0;
+}
+.checkout-row:last-child {
+    border-bottom: 1px solid transparent;
+}
+.sidebar-content {
+    padding: 1.5rem 2rem;
+    border: 1px solid #c1c1c1;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.sidebar-content:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.sidebar-content + .sidebar-content {
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.sidebar-header {
+    width: 100%;
+}
+.sidebar-title {
+    color: #333;
+    font-family: Montserrat,Arial,Helvetica,sans-serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    display: inline-block;
+    margin: 0;
+    text-align: left;
+}
+.sidebar-link {
+    color: #476bef;
+    font-family: Karla,Arial,Helvetica,sans-serif;
+    font-weight: 400;
+    margin: 0;
+    text-align: right;
+    float: right;
+}
+.sidebar-products {
+    margin: 0;
+    list-style: none;
+}
+.sidebar-product {
+    display: flex;
+}
+.sidebar-product-image {
+    width: 25%;
+    padding-right: 1.5rem;
+}
+.sidebar-product-title {
+    width: 50%;
+    padding-right: 0.375rem;
+}
+.sidebar-product-price {
+    align-self: flex-start;
+    text-align: right;
+    width: 25%;
+    word-wrap: break-word;
+}
+.sidebar-total {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.sidebar-payment-details {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.sidebar-payment-detail-left {
+    width: 50%;
+    text-align: left;
+    display: inline-block;
+    margin: 0;
+}
+.sidebar-payment-detail-right {
+    width: 50%;
+    text-align: right;
+    float: right;
+    margin: 0;
+}
+.cart-priceItem-label {
+    font-size: 1.15rem;
+    display: inline-block;
+}
+.cart-price-value {
+    font-size: 2.3rem;
+    font-weight: bold;
+}
+.form-prefixPostfix button {
+    height: 3.5rem;
+    padding: 1rem 2rem;
+    margin-left: 0.5rem;
+    border: 1px solid #c1c1c1;
+    border-radius: 5px;
+}
+.form-prefixPostfix button:hover {
+    background: #f5f5f5;
+}
+.active {
+    display: block;
+}
+.inactive {
+    display: none;
+}
+@media (min-width: 1261px) {
+    .checkout-rows {
+        padding-right: 6rem;
+    }
+    .checkout-layout {
+        padding-right: 6rem;
+        width: 66.66667%;
+        float: left;
+    }
+    .sidebar {
+        width: 33.33333%;
+        float: left;
+        position: sticky;
+        top: 0;
+        margin-top: 2rem;
+    }
+}
+</style>
+
+{{#partial "page"}}
+<header class="checkoutHeader optimizedCheckout-header">
+    <div class="checkoutHeader-content">
+        <h1 class="is-srOnly">{{lang 'checkout.title'}}</h1>
+        <h2 class="checkoutHeader-heading">
+            <a class="checkoutHeader-link" href="{{urls.home}}">
+                {{#if checkout.header_image}}
+                    <img alt="{{settings.store_logo.title}}" class="checkoutHeader-logo" id="logoImage" src="{{ checkout.header_image }}"/>
+                {{ else }}
+                    <span class="header-logo-text">{{settings.store_logo.title}}</span>
+                {{/if}}
+            </a>
+        </h2>
+    </div>
+</header>
+
+<div id="app" class="obundle-custom-checkout container">
+    <main>
+        <div class="checkout-layout">
+            <ol class="checkout-rows">
+                <li class="checkout-row">
+                    <div class="checkout-header">
+                        <div class="checkout-number">1</div>
+                        <h1 class="checkout-title">Customer</h1>
+                    </div>
+                    <div v-bind:class="{ active: signInAsGuest, inactive: !signInAsGuest }">
+                        <form id="checkout-guest" class="checkout-form" >
+                            <fieldset class="form-fieldset">
+                                <legend class="form-legend is-srOnly">Guest Customer</legend>
+                                <div class="form-body">
+                                    <p><span>Checking out as a <strong>Guest</strong>? You'll be able to save your details to create an account with us later.</span></p>
+                                    <div class="customerEmail-container">
+                                        <div class="customerEmail-body">
+                                            <div class="form-field">
+                                                <label for="email" class="form-label optimizedCheckout-form-label">Email Address</label>
+                                                <input name="email" autocomplete="email" id="email" class="form-input optimizedCheckout-form-input" type="email" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-actions customerEmail-action">
+                                            <button class="button customerEmail-button button--primary optimizedCheckout-buttonPrimary" type="submit">Continue as guest</button>
+                                        </div>
+                                    </div>
+                                    <p>Already have an account? <a v-on:click="toggleSignInMethod">Sign in now</a></p>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div v-bind:class="{ active: !signInAsGuest, inactive: signInAsGuest }">
+                        <form id="checkout-customer-returning" class="checkout-form">
+                            <fieldset class="form-fieldset">
+                                <legend class="form-legend is-srOnly">Returning Customer</legend>
+                                <div class="form-body">
+                                    <p>
+                                        <span>Don’t have an account? <a target="_blank" href="https://obundlesandbox.com/login.php?action=create_account">Create an account</a> to continue.</span>
+                                    </p>
+                                    <div class="form-field">
+                                        <label for="email" class="form-label optimizedCheckout-form-label">Email Address</label>
+                                        <input name="email" autocomplete="off" id="email" class="form-input optimizedCheckout-form-input" type="email">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="password" class="form-label optimizedCheckout-form-label">Password</label>
+                                        <div class="form-field-password">
+                                            <input name="password" id="password" class="form-input optimizedCheckout-form-input form-input--withIcon" type="password" value="" autocomplete="off">
+                                        </div>
+                                        <a href="https://obundlesandbox.com/login.php?action=reset_password" target="_blank">Forgot password?</a>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button class="button button--primary optimizedCheckout-buttonPrimary" type="submit">Sign In</button>
+                                        <a v-on:click="toggleSignInMethod" class="button optimizedCheckout-buttonSecondary">Cancel</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </li>
+                <li class="checkout-row">
+                    <div class="checkout-header">
+                        <div class="checkout-number">2</div>
+                        <h1 class="checkout-title">Shipping</h1>
+                    </div>
+                </li>
+                <li class="checkout-row">
+                    <div class="checkout-header">
+                        <div class="checkout-number">3</div>
+                        <h1 class="checkout-title">Billing</h1>
+                    </div>
+                </li>
+                <li class="checkout-row">
+                    <div class="checkout-header">
+                        <div class="checkout-number">4</div>
+                        <h1 class="checkout-title">Payment</h1>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <aside class="sidebar">
+            <section class="sidebar-content">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Order Summary</h2>
+                    <a class="sidebar-link" href="/cart.php">Edit Cart</a>
+                </div>
+            </section>
+            <section class="sidebar-content">
+                <p>${ products.length } Item(s)</p>
+                <ul class="sidebar-products">
+                    <li v-for="product in products">
+                        <div class="sidebar-product">
+                            <img class="sidebar-product-image" v-bind:src="product.imageUrl" />
+                            <div class="sidebar-product-title">
+                                <p>${ product.quantity } x ${ product.name }</p>
+                            </div>
+                            <div class="sidebar-product-price">
+                                <p>${ currencySymbol }${ product.quantity * product.salePrice }</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <section class="sidebar-content">
+                <div class="sidebar-payment-details">
+                    <p class="sidebar-payment-detail-left">Subtotal</p>
+                    <p class="sidebar-payment-detail-right">${ currencySymbol }${ subtotal }</p>
+                </div>
+                <div class="sidebar-payment-details">
+                    <p class="sidebar-payment-detail-left">Shipping</p>
+                    <p class="sidebar-payment-detail-right">--</p>
+                </div>
+                <div class="sidebar-payment-details">
+                    <p class="sidebar-payment-detail-left">Tax</p>
+                    <p class="sidebar-payment-detail-right">$0.00</p>
+                </div>
+                <div class="sidebar-payment-details">
+                    <p>Coupon/Gift Certificate</p>
+                    <form class="form-prefixPostfix">
+                        <input type="text" class="form-input" />
+                        <button type="submit">Apply</p>
+                    </form>
+                </div>
+            </section>
+            <section class="sidebar-content">
+                <div class="sidebar-total">
+                    <p class="sidebar-payment-detail-left cart-priceItem-label">Total (${ currencyCode })</p>
+                    <p class="sidebar-payment-detail-right cart-price-value">${ currencySymbol }${ total }</p>
+                </div>
+            </section>
+        </aside>
+    </main>
+</div>
+
+<!-- {{{ checkout.checkout_content }}} -->
+<script>window.__webpack_public_path__ = "{{cdn 'assets/dist/'}}";</script>
+<script src="{{cdn 'assets/dist/theme-bundle.main.js'}}"></script>
+
+<script>
+    window.stencilBootstrap("{{page_type}}", {{ jsContext }}).load();
+</script>
+
+{{{ footer.scripts }}}
+
+{{/partial}}
+
+{{> layout/empty}}
